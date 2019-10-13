@@ -6,6 +6,8 @@ const poleLeft = 0.25;
 const poleMiddle = 0.5;
 const poleRight = 0.75;
 const poleBaseHeight = 0.66;
+const poleHeight = 0.33;
+const poleWidth = 0.03;
 canvas.height = ch;
 canvas.width = cw;
 
@@ -15,8 +17,10 @@ function draw() {
     const baseRad : Radius = {tl: 10, tr: 10, bl: 10, br:10};
     ctx.clearRect(0, 0, cw, ch);
     ctx.fillStyle = 'black';
-    roundRect(ctx, poleLeft * cw - (0.1*cw), poleBaseHeight * ch, (poleRight - poleLeft) * cw + (0.1 * cw), 0.03 * ch, baseRad)
-    
+    roundRect(ctx, poleLeft * cw - (0.1*cw), poleBaseHeight * ch, (poleRight - poleLeft) * cw + (0.1 * cw), poleWidth * ch, baseRad)
+    roundRect(ctx, poleLeft * cw, poleHeight * ch, poleWidth * ch, (poleBaseHeight - poleHeight) * ch, baseRad);
+    roundRect(ctx, poleMiddle * cw, poleHeight * ch, poleWidth * ch, (poleBaseHeight - poleHeight) * ch, baseRad);
+    roundRect(ctx, poleRight * cw, poleHeight * ch, poleWidth * ch, (poleBaseHeight - poleHeight) * ch, baseRad)
     requestAnimationFrame(draw)
 }
 

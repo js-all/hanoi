@@ -7,6 +7,8 @@ var poleLeft = 0.25;
 var poleMiddle = 0.5;
 var poleRight = 0.75;
 var poleBaseHeight = 0.66;
+var poleHeight = 0.33;
+var poleWidth = 0.03;
 canvas.height = ch;
 canvas.width = cw;
 document.body.appendChild(canvas);
@@ -14,7 +16,10 @@ function draw() {
     var baseRad = { tl: 10, tr: 10, bl: 10, br: 10 };
     ctx.clearRect(0, 0, cw, ch);
     ctx.fillStyle = 'black';
-    roundRect(ctx, poleLeft * cw - (0.1 * cw), poleBaseHeight * ch, (poleRight - poleLeft) * cw + (0.1 * cw), 0.03 * ch, baseRad);
+    roundRect(ctx, poleLeft * cw - (0.1 * cw), poleBaseHeight * ch, (poleRight - poleLeft) * cw + (0.1 * cw), poleWidth * ch, baseRad);
+    roundRect(ctx, poleLeft * cw, poleHeight * ch, poleWidth * ch, (poleBaseHeight - poleHeight) * ch, baseRad);
+    roundRect(ctx, poleMiddle * cw, poleHeight * ch, poleWidth * ch, (poleBaseHeight - poleHeight) * ch, baseRad);
+    roundRect(ctx, poleRight * cw, poleHeight * ch, poleWidth * ch, (poleBaseHeight - poleHeight) * ch, baseRad);
     requestAnimationFrame(draw);
 }
 function play() {
