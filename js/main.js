@@ -8,18 +8,30 @@ var poleMiddle = 0.5;
 var poleRight = 0.75;
 var poleBaseHeight = 0.66;
 var poleHeight = 0.33;
-var poleWidth = 0.03;
+var poleWidth = 0.015;
 canvas.height = ch;
 canvas.width = cw;
 document.body.appendChild(canvas);
+var circles = [];
+var sizeT = 8;
+for (var i = 0; i < 8; i++) {
+    circles.push(new Circle(sizeT, 1, i + 1, "hsl(" + (i / 8 * 300 + 30) + ", 100%, 50%)"));
+    console.log(circles[i].color);
+    sizeT--;
+}
 function draw() {
-    var baseRad = { tl: 10, tr: 10, bl: 10, br: 10 };
+    var baseRad = createRad(4);
     ctx.clearRect(0, 0, cw, ch);
     ctx.fillStyle = 'black';
-    roundRect(ctx, poleLeft * cw - (0.1 * cw), poleBaseHeight * ch, (poleRight - poleLeft) * cw + (0.1 * cw), poleWidth * ch, baseRad);
-    roundRect(ctx, poleLeft * cw, poleHeight * ch, poleWidth * ch, (poleBaseHeight - poleHeight) * ch, baseRad);
-    roundRect(ctx, poleMiddle * cw, poleHeight * ch, poleWidth * ch, (poleBaseHeight - poleHeight) * ch, baseRad);
-    roundRect(ctx, poleRight * cw, poleHeight * ch, poleWidth * ch, (poleBaseHeight - poleHeight) * ch, baseRad);
+    ctx.strokeStyle = "black";
+    roundRect(ctx, poleLeft * cw - (0.1 * cw), poleBaseHeight * ch, (poleRight - poleLeft) * cw + (0.1 * cw * 2), poleWidth * ch, baseRad);
+    roundRect(ctx, poleLeft * cw - (poleWidth * ch) / 2, poleHeight * ch + (poleWidth * ch), poleWidth * ch, (poleBaseHeight - poleHeight) * ch, baseRad);
+    roundRect(ctx, poleMiddle * cw - (poleWidth * ch) / 2, poleHeight * ch + (poleWidth * ch), poleWidth * ch, (poleBaseHeight - poleHeight) * ch, baseRad);
+    roundRect(ctx, poleRight * cw - (poleWidth * ch) / 2, poleHeight * ch + (poleWidth * ch), poleWidth * ch, (poleBaseHeight - poleHeight) * ch, baseRad);
+    for (var _i = 0, circles_1 = circles; _i < circles_1.length; _i++) {
+        var circle = circles_1[_i];
+        circle.draw(ctx);
+    }
     requestAnimationFrame(draw);
 }
 function play() {
@@ -33,24 +45,3 @@ window.addEventListener("resize", function () {
     canvas.height = ch;
     canvas.width = cw;
 });
-function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
-    if (fill === void 0) { fill = true; }
-    if (stroke === void 0) { stroke = true; }
-    ctx.beginPath();
-    ctx.moveTo(x + radius.tl, y);
-    ctx.lineTo(x + width - radius.tr, y);
-    ctx.quadraticCurveTo(x + width, y, x + width, y + radius.tr);
-    ctx.lineTo(x + width, y + height - radius.br);
-    ctx.quadraticCurveTo(x + width, y + height, x + width - radius.br, y + height);
-    ctx.lineTo(x + radius.bl, y + height);
-    ctx.quadraticCurveTo(x, y + height, x, y + height - radius.bl);
-    ctx.lineTo(x, y + radius.tl);
-    ctx.quadraticCurveTo(x, y, x + radius.tl, y);
-    ctx.closePath();
-    if (fill) {
-        ctx.fill();
-    }
-    if (stroke) {
-        ctx.stroke();
-    }
-}
