@@ -7,25 +7,37 @@ const poleMiddle = 0.5;
 const poleRight = 0.75;
 const poleBaseHeight = 0.66;
 const poleHeight = 0.33;
-const poleWidth = 0.03;
+const poleWidth = 0.015;
 canvas.height = ch;
 canvas.width = cw;
 
 document.body.appendChild(canvas)
 
+const circles :Circle[] = [];
+let sizeT = 8;
+for(let i = 0; i < 8;i++) {
+    circles.push(new Circle(sizeT, 1, i+1, "hsl("+(i / 8 * 300 + 30)+", 100%, 50%)"));
+    console.log(circles[i].color)
+    sizeT--;
+}
+
 function draw() {
-    const baseRad : Radius = {tl: 10, tr: 10, bl: 10, br:10};
+    const baseRad = createRad(4);
     ctx.clearRect(0, 0, cw, ch);
     ctx.fillStyle = 'black';
-    roundRect(ctx, poleLeft * cw - (0.1*cw), poleBaseHeight * ch, (poleRight - poleLeft) * cw + (0.1 * cw), poleWidth * ch, baseRad)
-    roundRect(ctx, poleLeft * cw, poleHeight * ch, poleWidth * ch, (poleBaseHeight - poleHeight) * ch, baseRad);
-    roundRect(ctx, poleMiddle * cw, poleHeight * ch, poleWidth * ch, (poleBaseHeight - poleHeight) * ch, baseRad);
-    roundRect(ctx, poleRight * cw, poleHeight * ch, poleWidth * ch, (poleBaseHeight - poleHeight) * ch, baseRad)
+    ctx.strokeStyle = "black";
+    roundRect(ctx, poleLeft * cw - (0.1 * cw), poleBaseHeight * ch, (poleRight - poleLeft) * cw + (0.1 * cw * 2), poleWidth * ch, baseRad)
+    roundRect(ctx, poleLeft * cw - (poleWidth * ch) / 2, poleHeight * ch + (poleWidth * ch), poleWidth * ch, (poleBaseHeight - poleHeight) * ch, baseRad);
+    roundRect(ctx, poleMiddle * cw - (poleWidth * ch) / 2, poleHeight * ch + (poleWidth * ch), poleWidth * ch, (poleBaseHeight - poleHeight) * ch, baseRad);
+    roundRect(ctx, poleRight * cw - (poleWidth * ch) / 2, poleHeight * ch + (poleWidth * ch), poleWidth * ch, (poleBaseHeight - poleHeight) * ch, baseRad)
+    for(let circle of circles) {
+        circle.draw(ctx);
+    }
     requestAnimationFrame(draw)
 }
 
 function play() {
-    
+
 }
 
 play.rate = 10;
@@ -40,26 +52,7 @@ window.addEventListener("resize", () => {
     canvas.width = cw;
 })
 
-interface Radius {tl: number, tr: number, br: number, bl: number}
+interface Radius { tl: number, tr: number, br: number, bl: number }
 
 
-function roundRect(ctx: CanvasRenderingContext2D, x :number, y :number, width :number, height :number, radius :Radius, fill =true, stroke = true) {
-  ctx.beginPath();
-  ctx.moveTo(x + radius.tl, y);
-  ctx.lineTo(x + width - radius.tr, y);
-  ctx.quadraticCurveTo(x + width, y, x + width, y + radius.tr);
-  ctx.lineTo(x + width, y + height - radius.br);
-  ctx.quadraticCurveTo(x + width, y + height, x + width - radius.br, y + height);
-  ctx.lineTo(x + radius.bl, y + height);
-  ctx.quadraticCurveTo(x, y + height, x, y + height - radius.bl);
-  ctx.lineTo(x, y + radius.tl);
-  ctx.quadraticCurveTo(x, y, x + radius.tl, y);
-  ctx.closePath();
-  if (fill) {
-    ctx.fill();
-  }
-  if (stroke) {
-    ctx.stroke();
-  }
 
-}
